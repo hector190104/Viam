@@ -1,0 +1,41 @@
+
+/* Botón de mostrar/ocultar contraseña compacto y cuadrado */
+.register-password-group {
+  flex-wrap: nowrap !important;
+}
+.register-password-input {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+  min-width: 0 !important;
+}
+.register-password-btn {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+  height: 40px;
+  width: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  max-width: 40px;
+  max-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+/* Asegura que el feedback de error de la contraseña quede alineado a la izquierda debajo del input, aunque haya botón a la derecha */
+.register-password-group ~ .invalid-feedback {
+  text-align: left !important;
+  margin-left: 0 !important;
+  width: 100%;
+  display: block;
+}
+@media (max-width: 576px) {
+  .register-password-btn {
+    height: 38px;
+    width: 38px;
+    min-width: 38px;
+    min-height: 38px;
+    max-width: 38px;
+    max-height: 38px;
+  }
+}

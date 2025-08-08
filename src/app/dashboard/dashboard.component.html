@@ -1,0 +1,95 @@
+
+<div class="fullform-bg">
+  <div class="fullform-form dashboard-card" [ngClass]="{'scrollable-form': showForm}" style="width:100%;max-width:700px;">
+    <h2 class="fullform-title" style="margin-bottom:1.5rem;">{{ showForm ? 'Registro de Cursos' : 'Panel de Cursos' }}</h2>
+    <div class="wizard-nav" style="margin-bottom:2.5rem;">
+      <button class="wizard-btn next" (click)="agregarCurso()" style="min-width:180px;">
+        <span style="font-size:1.2rem;vertical-align:middle;">{{ showForm ? 'Cancelar' : 'Agregar Curso' }}</span>
+      </button>
+    </div>
+    <div *ngIf="successMsg" class="wizard-error" style="background:linear-gradient(90deg,#4f8cff 0%,#b16cea 100%)">{{ successMsg }}</div>
+    <div *ngIf="errorMsg" class="wizard-error">{{ errorMsg }}</div>
+
+    <!-- Formulario para agregar curso -->
+    <form *ngIf="showForm" [formGroup]="cursoForm" (ngSubmit)="submitCurso()" class="mb-3" style="width:100%">
+      <div class="fullform-step">
+        <label class="fullform-label"><i class="fa fa-book"></i> Título del curso:</label>
+        <input type="text" class="form-input" formControlName="titulo" placeholder="Título" />
+      </div>
+      <div class="fullform-step">
+        <label class="fullform-label"><i class="fa fa-link"></i> Slug (URL amigable):
+          <!-- <span class="slug-help" title="El slug es una versión corta y sin espacios del título, usado en la URL. Ejemplo: 'mi-curso-avanzado'">¿Qué es esto?</span> -->
+        </label>
+        <input type="text" class="form-input" formControlName="slug" placeholder="Ej: introduccion-programacion" />
+        <!-- <small class="slug-desc">Ejemplo: <b>introduccion-programacion</b> <span style="color:#888">(sin espacios, minúsculas, guiones)</span></small> -->
+        <small class="slug-desc">Versión corta y sin espacios del título, usado en la URL. <b> Ejemplo: 'mi-curso-avanzado'</b> <span style="color:#888">(sin espacios, minúsculas, guiones)</span></small>
+      </div>
+      <div class="fullform-step">
+        <label class="fullform-label"><i class="fa fa-align-left"></i> Descripción:</label>
+        <input type="text" class="form-input" formControlName="descripcion" placeholder="Descripción" />
+      </div>
+      <div class="fullform-step">
+        <label class="fullform-label"><i class="fa fa-signal"></i> Nivel:</label>
+        <select class="form-input" formControlName="nivel">
+          <option value="">Selecciona nivel</option>
+          <option value="PRINCIPIANTE">Principiante</option>
+          <option value="INTERMEDIO">Intermedio</option>
+          <option value="AVANZADO">Avanzado</option>
+        </select>
+      </div>
+      <div class="fullform-step">
+        <label class="fullform-label"><i class="fa fa-image"></i> URL Imagen (opcional):</label>
+        <input type="text" class="form-input" formControlName="urlImagen" placeholder="URL de imagen" />
+      </div>
+      <div class="fullform-step">
+        <label class="fullform-label"><i class="fa fa-clock"></i> Duración (horas):</label>
+        <input type="number" class="form-input" formControlName="duracionHoras" min="1" placeholder="Duración en horas" />
+      </div>
+      <div class="fullform-step">
+        <label class="fullform-label"><i class="fa fa-star"></i> Puntaje máximo:</label>
+        <input type="number" class="form-input" formControlName="puntajeMaximo" min="1" placeholder="Puntaje máximo" />
+      </div>
+      <div class="fullform-step">
+        <label class="fullform-label"><i class="fa fa-user"></i> ID Instructor:</label>
+        <input type="number" class="form-input" formControlName="instructorId" min="1" placeholder="ID del instructor" />
+      </div>
+      <div class="wizard-nav">
+        <button type="submit" class="wizard-btn next" [disabled]="loading" style="min-width:180px;">
+          <i class="fa fa-check"></i> Registrar Curso
+        </button>
+      </div>
+    </form>
+
+    <!-- Loader -->
+    <div *ngIf="loading && !showForm" class="wizard-error" style="background:linear-gradient(90deg,#b16cea 0%,#4f8cff 100%)">
+      <i class="fa fa-spinner fa-spin"></i> Cargando cursos...
+    </div>
+
+    <!-- No hay cursos -->
+    <div *ngIf="cursos.length === 0 && !loading && !showForm" class="wizard-error">
+      <i class="fa fa-exclamation-circle"></i> No hay cursos registrados.
+    </div>
+
+    <!-- Listado de cursos -->
+    <div *ngIf="cursos.length > 0 && !showForm">
+      <div class="dashboard-list-scroll">
+        <div class="dashboard-list">
+          <div class="dashboard-curso-card" *ngFor="let curso of cursos" (click)="verCurso(curso)">
+            <div class="dashboard-curso-img" *ngIf="curso.urlImagen">
+              <img [src]="curso.urlImagen" alt="Imagen curso" />
+            </div>
+            <div class="dashboard-curso-info">
+              <h3>{{ curso.titulo || curso.nombre }}</h3>
+              <p class="dashboard-curso-desc">{{ curso.descripcion }}</p>
+              <div class="dashboard-curso-meta">
+                <span><i class="fa fa-signal"></i> {{ curso.nivel || 'Sin nivel' }}</span>
+                <span><i class="fa fa-clock"></i> {{ curso.duracionHoras }}h</span>
+                <span><i class="fa fa-star"></i> {{ curso.puntajeMaximo }} pts</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,141 @@
+<div class="fullform-bg" *ngIf="!showWelcomeMessage">
+  <form class="fullform-form" [formGroup]="testForm">
+    <h2 class="fullform-title">Conozcámonos mejor</h2>
+
+    <!-- Paso 0: Edad -->
+    <div *ngIf="currentStep === 0" class="fullform-step">
+      <label>¿Qué edad tienes?</label>
+      <select class="form-select" formControlName="edad">
+        <option value="">Selecciona edad</option>
+        <option>Entre 15 y 17 años</option>
+        <option>18 años o más</option>
+      </select>
+    </div>
+
+    <!-- Paso 1: Nivel Educativo -->
+    <div *ngIf="currentStep === 1" class="fullform-step">
+      <label>¿En qué nivel educativo estás?</label>
+      <select class="form-select" formControlName="nivelEducativo">
+        <option value="">Selecciona nivel</option>
+        <option>Primaria</option>
+        <option>Secundaria</option>
+        <option>Preparatoria/Bachillerato</option>
+        <option>Otro</option>
+      </select>
+    </div>
+
+    <!-- Paso 2: Intereses -->
+    <div *ngIf="currentStep === 2" class="fullform-step">
+      <label>¿Qué temas te interesan más? (hasta 3)</label>
+      <div class="fullform-checkboxes">
+        <div *ngFor="let o of steps[1].options">
+          <label>
+            <input type="checkbox" [value]="o" (change)="onCheckboxChange($event)" />
+            {{ o }}
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paso 3: Experiencia -->
+    <div *ngIf="currentStep === 3" class="fullform-step">
+      <label>{{ steps[2].label }}</label>
+      <select class="form-select" formControlName="experiencia">
+        <option value="">Selecciona opción</option>
+        <option *ngFor="let o of steps[2].options">{{ o }}</option>
+      </select>
+    </div>
+
+    <!-- Paso 4: Actitud -->
+    <div *ngIf="currentStep === 4" class="fullform-step">
+      <label>¿Cómo te sientes respecto a STEAM? (hasta 3)</label>
+      <div class="fullform-checkboxes">
+        <div *ngFor="let o of steps[3].options">
+          <label>
+            <input type="checkbox" [value]="o" (change)="onCheckboxChange($event)" />
+            {{ o }}
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paso 5: FrecuenciaUso -->
+    <div *ngIf="currentStep === 5" class="fullform-step">
+      <label>{{ steps[4].label }}</label>
+      <select class="form-select" formControlName="frecuenciaUso">
+        <option value="">Selecciona opción</option>
+        <option *ngFor="let o of steps[4].options">{{ o }}</option>
+      </select>
+    </div>
+
+    <!-- Paso 6: Expectativas -->
+    <div *ngIf="currentStep === 6" class="fullform-step">
+      <label>{{ steps[5].label }}</label>
+      <select class="form-select" formControlName="expectativas">
+        <option value="">Selecciona opción</option>
+        <option *ngFor="let o of steps[5].options">{{ o }}</option>
+      </select>
+    </div>
+
+    <!-- Paso 7: DeseaMentoria -->
+    <div *ngIf="currentStep === 7" class="fullform-step">
+      <label>{{ steps[6].label }}</label>
+      <select class="form-select" formControlName="deseaMentoria">
+        <option value="">Selecciona opción</option>
+        <option *ngFor="let o of steps[6].options">{{ o }}</option>
+      </select>
+    </div>
+
+    <!-- Paso 8: EsNueva -->
+    <div *ngIf="currentStep === 8" class="fullform-step">
+      <label>{{ steps[7].label }}</label>
+      <select class="form-select" formControlName="esNueva">
+        <option value="">Selecciona opción</option>
+        <option *ngFor="let o of steps[7].options">{{ o }}</option>
+      </select>
+    </div>
+
+    <div *ngIf="errorStep" class="wizard-error">
+      Debes seleccionar una opción para continuar
+    </div>
+
+    <div class="wizard-nav">
+      <button type="button" class="wizard-btn prev" (click)="prevStep()" [disabled]="currentStep===0">
+        Anterior
+      </button>
+      <button type="button" class="wizard-btn next" (click)="nextStep()">
+        {{ currentStep < 8 ? 'Siguiente' : 'Enviar' }}
+      </button>
+    </div>
+
+    <div class="wizard-progress">
+      <span *ngFor="let s of steps; let idx = index" [class.active]="idx===currentStep"></span>
+    </div>
+  </form>
+</div>
+
+<!-- BLOQUE DE BIENVENIDA -->
+<div class="fullform-bg" *ngIf="showWelcomeMessage">
+  <div class="fullform-form">
+    <h2 class="fullform-title">¡Bienvenida a VIAM!</h2>
+    <p>¡Felicidades por completar nuestro test! 🎉</p>
+    <p>
+      Basándonos en tus respuestas, te presentamos una selección
+      de los cursos <strong>más populares</strong> dentro de nuestra
+      comunidad que mejor encajan con tus intereses y tu perfil.
+    </p>
+    <p>
+      Cada uno de estos programas cuenta con el respaldo de nuestras
+      mentoras y una red de compañeras entusiastas con quienes podrás
+      aprender, compartir y crecer.
+    </p>
+    <p>
+      🚀 ¡Tu viaje en STEAM está justo aquí! En VIAM celebramos cada paso
+      que das y nos encanta acompañarte en esta aventura.
+    </p>
+    <button type="button" class="wizard-btn next" (click)="closeWelcome()">
+      Ver cursos
+    </button>
+  </div>
+</div>
+

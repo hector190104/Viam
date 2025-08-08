@@ -1,0 +1,183 @@
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Bootstrap Icons -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+<!-- Overlay de carga animado idéntico a login/configuración -->
+<div *ngIf="loading" class="login-loading-overlay d-flex flex-column justify-content-center align-items-center">
+  <div class="login-spinner"></div>
+  <span class="mt-3 text-primary fw-bold fs-5">
+    {{ loadingMsg || 'Cargando perfil...' }}
+  </span>
+</div>
+<div *ngIf="errorMsg" class="alert alert-danger text-center my-5">
+  {{ errorMsg }}
+</div>
+
+<form [formGroup]="perfilForm" class="w-100">
+  <!-- Fondo gradiente animado global -->
+  <div class="perfil-bg-gradient"></div>
+
+  <!-- Botón de volver arriba a la izquierda -->
+  <div class="perfil-back-btn position-absolute top-0 start-0 p-3" style="z-index: 1050;">
+    <i class="bi bi-arrow-left-circle-fill fs-2 text-primary" style="cursor: pointer;" (click)="volver()" title="Volver"></i>
+  </div>
+
+  <div class="container-fluid min-vh-100 d-flex flex-column justify-content-center align-items-center bg-transparent px-0 py-3">
+    <div class="perfil-card border-0 text-center p-5 animated-fadeInUp position-relative mx-auto">
+      <div class="card-body pt-4 pb-2 px-3">
+        <!-- Foto y nombre -->
+        <div class="d-flex flex-column align-items-center mb-3">
+          <div class="position-relative mb-2">
+            <img src="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/icons/person-circle.svg"
+                 class="perfil-avatar"
+                 alt="Foto de perfil">
+          </div>
+          <h4 class="mb-1 fw-bold mt-2 text-center">
+             {{ nombreUsuario }}
+          </h4>
+          <div class="w-100 d-flex flex-column align-items-center">
+            <div *ngIf="!editandoBio" class="form-control mb-2 text-center bg-light"
+                 style="resize: none; max-width: 400px; min-height: 44px; cursor: pointer; font-size: 1rem;"
+                 (click)="activarEdicionBio()" title="Haz clic para editar tu descripción">
+              {{ perfilForm.value.biografia || 'Haz clic para agregar una descripción...' }}
+            </div>
+            <div *ngIf="editandoBio" class="w-100 d-flex flex-column align-items-center">
+              <textarea id="bioTextarea" class="form-control mb-2 text-center"
+                formControlName="biografia" rows="2"
+                style="resize: none; max-width: 400px; font-size: 1rem;"></textarea>
+              <button class="btn btn-primary btn-sm" type="button"
+                      [disabled]="guardandoBio"
+                      (click)="guardarBiografia()">
+                <span *ngIf="!guardandoBio">Guardar</span>
+                <span *ngIf="guardandoBio"><span class="spinner-border spinner-border-sm"></span> Guardando...</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Estadísticas generales -->
+        <div class="row text-center mb-3 g-3">
+          <div class="col-6 col-md-3">
+            <button type="button" class="perfil-stat-card inscritos w-100 h-100 d-flex flex-column align-items-center justify-content-center animate__animated animate__fadeInUp"
+                    (click)="abrirModal('inscritos')">
+              <span class="stat-icon mb-1"><i class="bi bi-journal-text"></i></span>
+              <span class="stat-label">Inscritos</span>
+              <span class="stat-value">{{ cursosInscritos.length }}</span>
+            </button>
+          </div>
+          <div class="col-6 col-md-3">
+            <button type="button" class="perfil-stat-card completados w-100 h-100 d-flex flex-column align-items-center justify-content-center animate__animated animate__fadeInUp"
+                    (click)="abrirModal('completados')">
+              <span class="stat-icon mb-1"><i class="bi bi-check-circle"></i></span>
+              <span class="stat-label">Completados</span>
+              <span class="stat-value">{{ cursosCompletados.length }}</span>
+            </button>
+          </div>
+          <div class="col-6 col-md-3">
+            <button type="button" class="perfil-stat-card medallas w-100 h-100 d-flex flex-column align-items-center justify-content-center animate__animated animate__fadeInUp"
+                    (click)="abrirModal('medallas')">
+              <span class="stat-icon mb-1"><i class="bi bi-gem"></i></span>
+              <span class="stat-label">Medallas</span>
+              <span class="stat-value">{{ medallas }}</span>
+            </button>
+          </div>
+          <div class="col-6 col-md-3">
+            <div class="perfil-stat-card puntos w-100 h-100 d-flex flex-column align-items-center justify-content-center animate__animated animate__fadeInUp">
+              <span class="stat-icon mb-1"><i class="bi bi-trophy"></i></span>
+              <span class="stat-label">Puntos</span>
+              <span class="stat-value">{{ puntos }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Progreso por curso -->
+        <div class="mb-3">
+          <h6 class="mb-2 fw-bold text-center">
+            <i class="bi bi-bar-chart-steps me-2 text-secondary"></i>Progreso por Curso
+          </h6>
+          <div class="mb-2" *ngFor="let curso of cursosInscritos">
+            <div class="d-flex flex-column flex-md-row align-items-md-center gap-2">
+              <input type="text" class="form-control w-100 w-md-50 mb-1 mb-md-0" [value]="curso.nombre" readonly>
+              <span class="fw-semibold small text-secondary ms-md-2">
+                {{ calcularProgreso(curso) }}% completado
+              </span>
+            </div>
+            <div class="progress perfil-progress mt-1" style="height: 18px;">
+              <div class="progress-bar d-flex align-items-center justify-content-center"
+                   [ngClass]="{
+                     'bg-success': calcularProgreso(curso) >= 80,
+                     'bg-warning': calcularProgreso(curso) >= 40 && calcularProgreso(curso) < 80,
+                     'bg-info': calcularProgreso(curso) < 40
+                   }"
+                   [style.width.%]="calcularProgreso(curso)">
+                <span class="text-white fw-bold small w-100 text-center">{{ calcularProgreso(curso) }}%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Último acceso -->
+        <div class="text-end mb-3">
+          <small class="text-muted">
+            <i class="bi bi-clock me-1"></i>
+            Último acceso:
+            <span class="ms-1">{{ perfilForm.value.ultimoAcceso }}</span>
+          </small>
+        </div>
+
+        <!-- Botón de cerrar sesión moderno y animado -->
+        <div class="d-flex justify-content-center mt-3">
+          <button class="perfil-logout-btn w-100 py-2 fw-semibold animated-bounce"
+                  (click)="cerrarSesion()" type="button">
+            <i class="bi bi-box-arrow-right me-2"></i>
+            <span>Cerrar sesión</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+<!-- Modal Bootstrap -->
+<div class="modal fade" id="perfilModal" tabindex="-1" aria-labelledby="perfilModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="perfilModalLabel">{{ modalTitulo }}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Inscritos -->
+        <div *ngIf="modalTipo === 'inscritos'">
+          <ul class="list-group">
+            <li class="list-group-item" *ngFor="let curso of cursosInscritos">
+              {{ curso.nombre }}
+            </li>
+          </ul>
+        </div>
+        <!-- Completados -->
+        <div *ngIf="modalTipo === 'completados'">
+          <ul class="list-group">
+            <li class="list-group-item" *ngFor="let curso of cursosCompletados">
+              {{ curso.nombre }}
+            </li>
+            <li *ngIf="cursosCompletados.length === 0" class="text-center text-muted list-group-item">
+              No has completado ningún curso aún.
+            </li>
+          </ul>
+        </div>
+        <!-- Medallas -->
+        <div *ngIf="modalTipo === 'medallas'">
+          <p class="text-center mb-0">
+            <i class="bi bi-gem fs-2 text-warning"></i>
+          </p>
+          <p class="text-center mt-2">
+            ¡Has conseguido <b>{{ medallas }}</b> medallas!
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

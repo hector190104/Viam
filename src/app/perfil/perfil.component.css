@@ -1,0 +1,263 @@
+/* Reforzamos reglas de cards de estadísticas SOLO para este componente, máxima prioridad */
+:host ::ng-deep .perfil-stat-card {
+  min-height: 120px;
+  aspect-ratio: 1/1;
+  border-radius: 1.2rem;
+  box-shadow: 0 4px 24px 0 rgba(0,0,0,0.10), 0 1.5px 8px 0 rgba(0,0,0,0.08) !important;
+  background: #fff !important;
+  border: 1.5px solid #e5e7eb !important;
+  color: #111 !important;
+}
+:host ::ng-deep .perfil-stat-card .stat-label,
+:host ::ng-deep .perfil-stat-card .stat-value {
+  color: #111 !important;
+  text-shadow: none !important;
+}
+:host ::ng-deep .perfil-stat-card .stat-icon {
+  font-size: 2.2rem;
+  transition: color 0.18s, filter 0.18s;
+}
+:host ::ng-deep .perfil-stat-card.inscritos .stat-icon {
+  color: #2196f3 !important;
+  filter: drop-shadow(0 0 6px #2196f322) !important;
+}
+:host ::ng-deep .perfil-stat-card.completados .stat-icon {
+  color: #22c55e !important;
+  filter: drop-shadow(0 0 6px #22c55e33) !important;
+}
+:host ::ng-deep .perfil-stat-card.medallas .stat-icon {
+  color: #ffc107 !important;
+  filter: drop-shadow(0 0 6px #ffc10755) !important;
+}
+:host ::ng-deep .perfil-stat-card.puntos .stat-icon {
+  color: #ef4444 !important;
+  filter: drop-shadow(0 0 6px #ef444455) !important;
+}
+body.modo-oscuro :host ::ng-deep .perfil-stat-card {
+  background: #23272b !important;
+  border: 1.5px solid #23272b !important;
+  box-shadow: 0 4px 24px 0 rgba(0,0,0,0.32), 0 1.5px 8px 0 rgba(0,0,0,0.22) !important;
+  color: #fff !important;
+}
+body.modo-oscuro :host ::ng-deep .perfil-stat-card .stat-label,
+body.modo-oscuro :host ::ng-deep .perfil-stat-card .stat-value {
+  color: #fff !important;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.18) !important;
+}
+body.modo-oscuro :host ::ng-deep .perfil-stat-card .stat-icon {
+  color: #fff !important;
+  filter: drop-shadow(0 0 10px #fff3) !important;
+}
+.perfil-card {
+  width: 100%;
+  max-width: 430px;
+  min-width: 0;
+  margin: 0 auto;
+  border-radius: 1.5rem;
+  box-shadow: 0 2px 16px 0 rgba(0,0,0,0.08);
+  /* background removed to allow global and theme-specific styles to apply */
+}
+
+@media (min-width: 768px) {
+  .perfil-card {
+    max-width: 600px;
+    padding: 0 2rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .perfil-card {
+    max-width: 700px;
+    padding: 0 3rem;
+  }
+}
+
+/* --- Estadísticas: Glassmorphism, microinteracciones, animaciones --- */
+/* Modo normal: fondo blanco puro para las cards de estadísticas */
+/* Modo normal: fondo blanco puro para las cards de estadísticas */
+/* Modo normal: fondo blanco puro, borde gris claro, sombra suave */
+/* Forzar fondo blanco puro y borde gris claro en modo claro, y letras/números negros */
+/* Modo claro: fondo blanco puro, borde gris claro, letras/números negros */
+.perfil-stat-card {
+  min-height: 120px;
+  aspect-ratio: 1/1;
+  border-radius: 1.2rem;
+  box-shadow: 0 4px 24px 0 rgba(0,0,0,0.10), 0 1.5px 8px 0 rgba(0,0,0,0.08) !important;
+  background: #fff !important;
+  border: 1.5px solid #e5e7eb !important;
+}
+body.modo-oscuro .perfil-stat-card {
+  background: #23272b !important;
+  border: 1.5px solid #23272b !important;
+  box-shadow: 0 4px 24px 0 rgba(0,0,0,0.32), 0 1.5px 8px 0 rgba(0,0,0,0.22) !important;
+  transition: transform 0.18s cubic-bezier(.4,0,.2,1), box-shadow 0.18s, background 0.18s;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+/* Letras y números modo claro: negro fuerte */
+/* Letras y números modo claro: negro fuerte */
+.perfil-stat-card .stat-label,
+.perfil-stat-card .stat-value {
+  color: #111;
+  text-shadow: none;
+}
+body.modo-oscuro .perfil-stat-card .stat-label,
+body.modo-oscuro .perfil-stat-card .stat-value {
+  color: #fff !important;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.18) !important;
+}
+/* Hover: solo sombra, no cambies el fondo blanco */
+/* Hover: solo sombra, no cambies el fondo blanco */
+.perfil-stat-card:hover, .perfil-stat-card:focus {
+  transform: translateY(-6px) scale(1.045);
+  box-shadow: 0 8px 32px 0 rgba(0,0,0,0.16), 0 2px 12px 0 rgba(0,0,0,0.10);
+}
+.perfil-stat-card:active {
+  transform: scale(0.98);
+  box-shadow: 0 2px 8px 0 rgba(0,0,0,0.10);
+}
+/* Iconos de cards de estadísticas: color individual por tipo */
+.perfil-stat-card .stat-icon {
+  font-size: 2.2rem;
+  transition: color 0.18s, filter 0.18s;
+}
+body.modo-oscuro .perfil-stat-card .stat-icon {
+  color: #fff !important;
+  filter: drop-shadow(0 0 10px #fff3) !important;
+}
+.perfil-stat-card.inscritos .stat-icon {
+  color: var(--bs-primary);
+  filter: drop-shadow(0 0 6px rgba(0,123,255,0.12));
+}
+.perfil-stat-card.completados .stat-icon {
+  color: #28a745;
+  filter: drop-shadow(0 0 6px #28a74533);
+}
+.perfil-stat-card.medallas .stat-icon {
+  color: #ffc107;
+  filter: drop-shadow(0 0 6px #ffc10755);
+}
+.perfil-stat-card.puntos .stat-icon {
+  color: #dc3545;
+  filter: drop-shadow(0 0 6px #dc354555);
+}
+.perfil-stat-card:hover .stat-icon {
+  filter: drop-shadow(0 0 12px #ffb30088);
+}
+/* Modo oscuro: fondo, letras y números blancos, iconos blancos */
+/* Regla duplicada eliminada: modo oscuro ahora solo fondo y borde sólidos, sin transparencia */
+body.modo-oscuro .perfil-stat-card .stat-label,
+body.modo-oscuro .perfil-stat-card .stat-value {
+  color: #fff !important;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.18) !important;
+}
+body.modo-oscuro .perfil-stat-card .stat-icon {
+  color: #fff !important;
+  filter: drop-shadow(0 0 10px #fff3) !important;
+}
+/* Letras y números modo claro: negro, fuerte y legible */
+.perfil-stat-card .stat-label {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #222;
+  margin-bottom: 0.1rem;
+  letter-spacing: 0.01em;
+  opacity: 0.95;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.04);
+}
+.perfil-stat-card .stat-value {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #222;
+  letter-spacing: 0.01em;
+  margin-top: 0.1rem;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.10);
+}
+/* Iconos modo claro: color individual por tipo */
+/* Modo normal: iconos de color, igual que en tu ejemplo */
+.perfil-stat-card.inscritos .stat-icon {
+  color: #2196f3 !important;
+  filter: drop-shadow(0 0 6px #2196f322) !important;
+}
+.perfil-stat-card.completados .stat-icon {
+  color: #22c55e !important;
+  filter: drop-shadow(0 0 6px #22c55e33) !important;
+}
+.perfil-stat-card.medallas .stat-icon {
+  color: #ffc107 !important;
+  filter: drop-shadow(0 0 6px #ffc10755) !important;
+}
+.perfil-stat-card.puntos .stat-icon {
+  color: #ef4444 !important;
+  filter: drop-shadow(0 0 6px #ef444455) !important;
+}
+@media (max-width: 991.98px) {
+  .perfil-stat-card {
+    min-height: 100px;
+    font-size: 0.98rem;
+  }
+  .perfil-stat-card .stat-icon {
+    font-size: 1.7rem;
+  }
+  .perfil-stat-card .stat-value {
+    font-size: 1.15rem;
+  }
+}
+@media (max-width: 575.98px) {
+  .perfil-stat-card {
+    min-height: 80px;
+    font-size: 0.93rem;
+    padding: 0.5rem 0.2rem;
+  }
+  .perfil-stat-card .stat-icon {
+    font-size: 1.2rem;
+  }
+  .perfil-stat-card .stat-value {
+    font-size: 1rem;
+  }
+}
+/* Animación de entrada (fadeInUp) para cards */
+.animate__animated.animate__fadeInUp {
+  animation-name: fadeInUp;
+  animation-duration: 0.7s;
+  animation-fill-mode: both;
+}
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 40px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+/* --- Fin estadísticas --- */
+@media (max-width: 991.98px) {
+  .stat-box {
+    min-height: 90px;
+    padding: 0.75rem !important;
+  }
+  .stat-input {
+    font-size: 1rem;
+    max-width: 60px;
+  }
+}
+@media (max-width: 575.98px) {
+  .perfil-card {
+    max-width: 98vw;
+    padding: 0 0.5rem;
+  }
+  .stat-box {
+    min-height: 60px;
+    padding: 0.5rem !important;
+  }
+  .stat-input {
+    font-size: 0.95rem;
+    max-width: 50px;
+  }
+  .perfil-progress {
+    height: 14px !important;
+  }
+}

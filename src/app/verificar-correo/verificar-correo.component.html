@@ -1,0 +1,21 @@
+<div class="verificacion-container animated-fadeInUp">
+  <div class="text-center mb-3">
+    <div class="verificacion-avatar mx-auto mb-2 animated-pop">
+      <i class="bi bi-shield-check text-primary fs-1"></i>
+    </div>
+    <h5 class="mb-1 text-primary fw-bold">Verifica tu correo</h5>
+    <p class="mb-3 text-secondary small">Ingresa el código que te enviamos por correo electrónico.</p>
+  </div>
+  <div class="mb-3">
+    <input type="text" maxlength="6" class="form-control text-center fs-4"
+           [(ngModel)]="codigo" placeholder="Código de 6 dígitos" [disabled]="loading">
+  </div>
+  <button class="btn btn-primary w-100 mb-2 animated-btn" (click)="verificar()" [disabled]="loading || codigo.length !== 6">
+    <i class="bi bi-shield-lock"></i> Verificar
+  </button>
+  <button class="btn btn-link w-100" (click)="reenviarCodigo()" [disabled]="loading">
+    <i class="bi bi-arrow-repeat"></i> Reenviar código
+  </button>
+  <div *ngIf="errorMsg" class="alert alert-danger mt-2 text-center animated-fadeIn">{{ errorMsg }}</div>
+  <div *ngIf="successMsg" class="alert alert-success mt-2 text-center animated-fadeIn">{{ successMsg }}</div>
+</div>
