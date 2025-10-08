@@ -1,19 +1,15 @@
 {
-  "version": 3,
+  "version": 2,
   "builds": [
     {
       "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist/viam-web/browser"
-      }
-    },
-    {
-      "src": "dist/viam-web/server/main.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
-    { "src": "/(.*)", "dest": "dist/viam-web/server/main.js" }
+    {
+      "src": "/(.*)",
+      "dest": "dist/viam-web/server/main.js"
+    }
   ]
 }
