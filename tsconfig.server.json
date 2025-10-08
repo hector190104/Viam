@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.app.json",
+  "compilerOptions": {
+    "outDir": "./dist/viam-web/server",
+    "baseUrl": ".",
+    "module": "CommonJS"
+  },
+  "files": [
+    "src/main.server.ts"
+  ],
+  "angularCompilerOptions": {
+    "enableIvy": true,
+    "entryModule": "src/app/app.server.module#AppServerModule"
+  }
+}

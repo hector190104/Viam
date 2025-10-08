@@ -24,4 +24,14 @@
     "strictInputAccessModifiers": true,
     "strictTemplates": true
   }
+  ,
+  "exclude": [
+    "server.ts",
+    "main.server.ts",
+    "src/main.server.ts",
+    "src/app/app.server.module.ts",
+    "src/app/app.module.ts",
+    "dist",
+    "dist/**"
+  ]
 }
