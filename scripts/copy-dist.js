@@ -6,6 +6,7 @@ async function main() {
   const destRoot = path.resolve(__dirname, '..', 'browser');
   const destVercel = path.resolve(__dirname, '..', '.vercel', 'output', 'static');
   const destStatic = path.resolve(__dirname, '..', 'static');
+  const destDistRoot = path.resolve(__dirname, '..', 'dist', 'viam-web');
 
   if (!fs.existsSync(src)) {
     console.error('Source folder does not exist:', src);
@@ -29,6 +30,17 @@ async function main() {
   await mkdir(destStatic, { recursive: true });
   await cp(src, destStatic, { recursive: true, force: true });
   console.log('Copied', src, 'to', destStatic);
+
+    // copy browser contents up to dist/viam-web so index.html sits at dist/viam-web/index.html
+    await mkdir(destDistRoot, { recursive: true });
+    // copy all files inside src to destDistRoot (not the browser folder itself)
+    const entries = await require('fs').promises.readdir(src, { withFileTypes: true });
+    for (const entry of entries) {
+      const srcPath = path.join(src, entry.name);
+      const destPath = path.join(destDistRoot, entry.name);
+      await cp(srcPath, destPath, { recursive: true, force: true });
+    }
+    console.log('Copied contents of', src, 'to', destDistRoot);
   } catch (err) {
     console.error('Copy failed:', err);
     process.exit(1);
