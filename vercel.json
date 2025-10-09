@@ -3,7 +3,7 @@
   "version": 2,
   "installCommand": "npm ci --include=dev",
   "buildCommand": "npm run vercel-build",
-  "outputDirectory": ".vercel/output/static",
+  "outputDirectory": "static",
   "routes": [
     { "src": "(.*)", "dest": "/index.html" }
   ]
