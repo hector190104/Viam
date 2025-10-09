@@ -3,9 +3,9 @@
   "version": 2,
   "installCommand": "npm ci --include=dev",
   "buildCommand": "npm run vercel-build",
-  "outputDirectory": "dist/viam-web/browser",
+  "outputDirectory": "dist/viam-web",
   "builds": [
-    { "src": "package.json", "use": "@vercel/static-build", "config": { "distDir": "dist/viam-web/browser" } }
+    { "src": "package.json", "use": "@vercel/static-build", "config": { "distDir": "dist/viam-web" } }
   ],
   "routes": [
     { "src": "(.*)", "dest": "/index.html" }
