@@ -7,7 +7,7 @@
     "build": "node ./node_modules/@angular/cli/bin/ng.js build --configuration production",
     "build:ssr": "node ./node_modules/@angular/cli/bin/ng.js build --configuration production && node ./node_modules/@angular/cli/bin/ng.js run viam-web:server:production",
     "serve:ssr": "node dist/viam-web/server/main.js",
-  "vercel-build": "npm run build && mkdir -p /vercel/output && cp -r dist/viam-web/* /vercel/output/ && mkdir -p viam-web && cp -r dist/viam-web/* viam-web/"
+  "vercel-build": "npm run build && mkdir -p /vercel/output && cp -r dist/viam-web/* /vercel/output/ && mkdir -p viam-web && cp -r dist/viam-web/* viam-web/ && echo '--- VERCEL OUTPUT /vercel/output ---' && ls -la /vercel/output || true && echo '--- ROOT viam-web ---' && ls -la viam-web || true"
   },
   "dependencies": {
     "@angular/common": "^19.2.0",
