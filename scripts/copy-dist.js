@@ -7,6 +7,7 @@ async function main() {
   const destVercel = path.resolve(__dirname, '..', '.vercel', 'output', 'static');
   const destStatic = path.resolve(__dirname, '..', 'static');
   const destDistRoot = path.resolve(__dirname, '..', 'dist', 'viam-web');
+  const destViwamWeb = path.resolve(__dirname, '..', 'viam-web');
 
   if (!fs.existsSync(src)) {
     console.error('Source folder does not exist:', src);
@@ -41,6 +42,16 @@ async function main() {
       await cp(srcPath, destPath, { recursive: true, force: true });
     }
     console.log('Copied contents of', src, 'to', destDistRoot);
+
+    // copy to root-level viam-web for Dashboard override expecting 'viam-web'
+    await mkdir(destViwamWeb, { recursive: true });
+    const entries2 = await require('fs').promises.readdir(destDistRoot, { withFileTypes: true });
+    for (const entry of entries2) {
+      const srcPath = path.join(destDistRoot, entry.name);
+      const destPath = path.join(destViwamWeb, entry.name);
+      await cp(srcPath, destPath, { recursive: true, force: true });
+    }
+    console.log('Copied contents of', destDistRoot, 'to', destViwamWeb);
   } catch (err) {
     console.error('Copy failed:', err);
     process.exit(1);
