@@ -3,9 +3,9 @@
   "version": 2,
   "installCommand": "npm ci --include=dev",
   "buildCommand": "npm run vercel-build",
-  "outputDirectory": "browser",
+  "outputDirectory": ".vercel/output/static",
   "builds": [
-    { "src": "package.json", "use": "@vercel/static-build", "config": { "distDir": "browser" } }
+    { "src": "package.json", "use": "@vercel/static-build", "config": { "distDir": ".vercel/output/static" } }
   ],
   "routes": [
     { "src": "(.*)", "dest": "/index.html" }
