@@ -1,7 +1,7 @@
 {
   "version": 2,
   "builds": [
-    { "src": "package.json", "use": "@vercel/static-build", "config": { "distDir": "dist/viam-web" } }
+    { "src": "package.json", "use": "@vercel/static-build", "config": { "distDir": "dist/viam-web", "installCommand": "npm ci --include=dev" } }
   ],
   "routes": [
     { "src": "(.*)", "dest": "/index.html" }
