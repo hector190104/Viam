@@ -1,5 +1,15 @@
 import 'zone.js/node';
-import { ngExpressEngine } from '@nguniversal/express-engine';
+// Cargar ngExpressEngine dinámicamente para no producir errores cuando
+// las dependencias SSR/Universal no estén instaladas (por ejemplo, en
+// despliegues estáticos donde no necesitamos Universal).
+let ngExpressEngine: any | undefined;
+try {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  ngExpressEngine = require('@nguniversal/express-engine').ngExpressEngine;
+} catch {
+  ngExpressEngine = undefined;
+}
+
 import express, { Request, Response } from 'express';
 import { join } from 'path';
 import { APP_BASE_HREF } from '@angular/common';
@@ -23,7 +33,7 @@ try {
 const app = express();
 const DIST_FOLDER = join(process.cwd(), 'dist/viam-web');
 
-if (AppServerModule) {
+if (AppServerModule && ngExpressEngine) {
   app.engine('html', ngExpressEngine({ bootstrap: AppServerModule }));
   app.set('view engine', 'html');
   app.set('views', DIST_FOLDER);
