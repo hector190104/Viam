@@ -1,6 +1,7 @@
 {
   "version": 2,
   "installCommand": "npm ci --include=dev",
+  "outputDirectory": "dist/viam-web",
   "builds": [
     { "src": "package.json", "use": "@vercel/static-build", "config": { "distDir": "dist/viam-web" } }
   ],
