@@ -1,0 +1,12 @@
+(empty file)
+@media (max-width: 600px) {
+	.btn, .btn-lg, .btn-outline-secondary {
+		font-size: 1rem;
+		padding: 0.75rem 1.2rem;
+		width: 100%;
+		margin-bottom: 0.5rem;
+	}
+	.card {
+		margin-bottom: 1rem;
+	}
+}

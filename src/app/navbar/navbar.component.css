@@ -58,6 +58,22 @@ body.modo-oscuro .custom-navbar-glass {
   color: #007bff;
   transform: scale(0.97);
 }
+@media (min-width: 900px) {
+  .custom-navbar-glass {
+    position: static !important;
+    width: 100%;
+    box-shadow: none;
+  }
+}
+@media (max-width: 899px) {
+  .custom-navbar-glass {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1050;
+  }
+}
 .navbar-btn:hover {
   background: rgba(180, 210, 255, 0.22);
   color: #007bff;

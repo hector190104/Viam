@@ -66,14 +66,14 @@ export class RegisterComponent {
               next: () => {
                 setTimeout(() => {
                   this.loading = false;
-                  this.router.navigate(['/login']);
+                  this.router.navigate(['/formulario']);
                 }, 1200);
               },
               error: () => {
                 setTimeout(() => {
                   this.loading = false;
                   this.errorMsg = 'Usuario creado, pero hubo un error creando el perfil.';
-                  this.router.navigate(['/login']);
+                  this.router.navigate(['/formulario']);
                 }, 1200);
               }
             });
