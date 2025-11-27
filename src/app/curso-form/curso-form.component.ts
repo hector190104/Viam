@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { SafeUrlPipe } from '../safe-url.pipe';
 
 interface Actividad {
   id: number;
@@ -9,12 +10,13 @@ interface Actividad {
   descripcion: string;
   contenido?: string;
   preguntas?: any[];
+  videoUrl?: string; // URL de video opcional para lecturas
 }
 
 @Component({
   selector: 'app-curso-form',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, SafeUrlPipe],
   templateUrl: './curso-form.component.html',
   styleUrls: ['./curso-form.component.css']
 })
@@ -43,41 +45,7 @@ export class CursoFormComponent {
           tipo: 'lectura',
           titulo: 'Fundamentos de la Tecnología',
           descripcion: 'Conoce los conceptos básicos de la tecnología',
-          contenido: `
-            <h2>¿Qué es la Tecnología?</h2>
-            <p>La tecnología es el conjunto de conocimientos, técnicas y procesos que utilizamos para crear herramientas, máquinas y sistemas que nos ayudan a resolver problemas y mejorar nuestra vida diaria.</p>
-            
-            <h3>Historia de la Tecnología</h3>
-            <p>La tecnología ha evolucionado desde las primeras herramientas de piedra hasta los dispositivos digitales modernos. Algunos hitos importantes incluyen:</p>
-            <ul>
-              <li><strong>Prehistoria:</strong> Herramientas de piedra y fuego</li>
-              <li><strong>Antigüedad:</strong> Rueda, escritura y metalurgia</li>
-              <li><strong>Revolución Industrial:</strong> Máquinas de vapor y electricidad</li>
-              <li><strong>Era Digital:</strong> Computadoras, internet y smartphones</li>
-            </ul>
-            
-            <h3>Tipos de Tecnología</h3>
-            <p>Existen diferentes categorías de tecnología:</p>
-            <ul>
-              <li><strong>Tecnología de la Información:</strong> Computadoras, software, internet</li>
-              <li><strong>Tecnología de Comunicación:</strong> Teléfonos, radio, televisión</li>
-              <li><strong>Tecnología Médica:</strong> Equipos de diagnóstico, prótesis</li>
-              <li><strong>Tecnología de Transporte:</strong> Automóviles, aviones, trenes</li>
-              <li><strong>Tecnología Verde:</strong> Energías renovables, reciclaje</li>
-            </ul>
-            
-            <h3>Impacto de la Tecnología</h3>
-            <p>La tecnología ha transformado nuestras vidas en muchas formas:</p>
-            <ul>
-              <li>Facilita la comunicación global</li>
-              <li>Mejora la medicina y la salud</li>
-              <li>Aumenta la eficiencia en el trabajo</li>
-              <li>Proporciona entretenimiento y educación</li>
-              <li>Ayuda a resolver problemas complejos</li>
-            </ul>
-            
-            <p>Es importante entender tanto los beneficios como los desafíos que presenta la tecnología para poder usarla de manera responsable.</p>
-          `
+          videoUrl: 'https://www.youtube.com/watch?v=drvZxBCcfGA' // Ejemplo de video de YouTube
         },
         {
           id: 2,
@@ -329,7 +297,8 @@ export class CursoFormComponent {
         tipo: 'lectura',
         titulo: this.titulo || 'Lectura',
         descripcion: this.descripcion || '',
-        contenido: this.obtenerContenidoTecnologia() // Usar el contenido estático
+        // contenido: this.obtenerContenidoTecnologia() // Usar el contenido estático
+        videoUrl: 'https://www.youtube.com/watch?v=drvZxBCcfGA' // Ejemplo de video de YouTube
       };
     } else if (this.tipo === 'preguntas') {
       this.actividad = {

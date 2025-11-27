@@ -12,6 +12,33 @@ import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angula
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+    formChanged = false;
+    ngOnInit() {
+      this.cargarCursos();
+      this.cursoForm.valueChanges.subscribe(() => {
+        this.formChanged = this.editandoCursoId
+          ? this.checkFormChanged()
+          : this.cursoForm.valid;
+      });
+    }
+
+    checkFormChanged(): boolean {
+      if (!this.editandoCursoId) return false;
+      const curso = this.cursos.find((c: any) => c.id === this.editandoCursoId);
+      if (!curso) return false;
+      const formValue = this.cursoForm.value;
+      return (
+        formValue.titulo !== curso.titulo ||
+        formValue.slug !== curso.slug ||
+        formValue.descripcion !== curso.descripcion ||
+        formValue.urlImagen !== curso.urlImagen ||
+        formValue.nivel !== curso.nivel ||
+        formValue.duracionHoras !== curso.duracionHoras ||
+        formValue.puntajeMaximo !== curso.puntajeMaximo ||
+        formValue.instructorId !== (curso.instructor?.id || this.instructorId)
+      ) && this.cursoForm.valid;
+    }
+  editandoCursoId: number | null = null;
   cursos: any[] = [];
   loading = false;
   errorMsg = '';
@@ -33,9 +60,6 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    this.cargarCursos();
-  }
 
   cargarCursos() {
     this.loading = true;
@@ -56,6 +80,8 @@ export class DashboardComponent implements OnInit {
     this.successMsg = '';
     this.errorMsg = '';
     this.cursoForm.reset();
+    this.editandoCursoId = null;
+    this.formChanged = false;
   }
 
   submitCurso() {
@@ -75,21 +101,65 @@ export class DashboardComponent implements OnInit {
       puntajeMaximo: formValue.puntajeMaximo,
       instructor: { id: formValue.instructorId }
     };
-    this.usuarioService.crearCurso(cursoPayload).subscribe({
-      next: (curso) => {
-        this.successMsg = 'Curso registrado correctamente';
-        this.showForm = false;
+    if (this.editandoCursoId) {
+      this.usuarioService.actualizarCurso(this.editandoCursoId, cursoPayload).subscribe({
+        next: (curso) => {
+          this.successMsg = 'Curso actualizado correctamente';
+          this.showForm = false;
+          this.cargarCursos();
+          this.loading = false;
+          this.editandoCursoId = null;
+        },
+        error: (err) => {
+          this.errorMsg = 'Error al actualizar curso';
+          this.loading = false;
+        }
+      });
+    } else {
+      this.usuarioService.crearCurso(cursoPayload).subscribe({
+        next: (curso) => {
+          this.successMsg = 'Curso registrado correctamente';
+          this.showForm = false;
+          this.cargarCursos();
+          this.loading = false;
+        },
+        error: (err) => {
+          this.errorMsg = 'Error al registrar curso';
+          this.loading = false;
+        }
+      });
+    }
+  }
+  editarCurso(curso: any) {
+    this.showForm = true;
+    this.successMsg = '';
+    this.errorMsg = '';
+    this.editandoCursoId = curso.id;
+    this.cursoForm.patchValue({
+      titulo: curso.titulo,
+      slug: curso.slug,
+      descripcion: curso.descripcion,
+      urlImagen: curso.urlImagen,
+      nivel: curso.nivel,
+      duracionHoras: curso.duracionHoras,
+      puntajeMaximo: curso.puntajeMaximo,
+      instructorId: curso.instructor?.id || this.instructorId
+    });
+    this.formChanged = false;
+  }
+  eliminarCurso(cursoId: number) {
+    if (!confirm('¿Seguro que deseas eliminar este curso?')) return;
+    this.loading = true;
+    this.usuarioService.eliminarCurso(cursoId).subscribe({
+      next: () => {
+        this.successMsg = 'Curso eliminado correctamente';
         this.cargarCursos();
         this.loading = false;
       },
       error: (err) => {
-        this.errorMsg = 'Error al registrar curso';
+        this.errorMsg = 'Error al eliminar curso';
         this.loading = false;
       }
     });
-  }
-
-  verCurso(curso: any) {
-    this.router.navigate(['/cursos', curso.slug || curso.id]);
   }
 }

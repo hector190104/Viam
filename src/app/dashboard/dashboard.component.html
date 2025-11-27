@@ -1,7 +1,7 @@
 
 
 <div class="dashboard-container">
-  <h2 class="dashboard-title">{{ showForm ? 'Registro de Cursos' : 'Panel de Cursos' }}</h2>
+  <h2 class="dashboard-title">{{ showForm ? (editandoCursoId ? 'Editar Curso' : 'Registro de Cursos') : 'Panel de Cursos' }}</h2>
   <div *ngIf="!showForm" style="margin-bottom:1.5rem;">
     <button class="add-course-btn" (click)="agregarCurso()">
       Agregar Curso
@@ -11,7 +11,7 @@
   <div *ngIf="errorMsg" class="wizard-error">{{ errorMsg }}</div>
 
   <!-- Formulario para agregar curso -->
-  <form *ngIf="showForm" [formGroup]="cursoForm" (ngSubmit)="submitCurso()" class="modal-form" style="width:100%;max-width:420px;margin:auto;padding:24px 24px 16px 24px;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.10);border:1px solid #e0e0e0;">
+  <form *ngIf="showForm" [formGroup]="cursoForm" (ngSubmit)="submitCurso()" class="modal-form">
     <label style="margin-top:8px;">Título del curso:</label>
     <input type="text" formControlName="titulo" placeholder="Título" />
     <label>Slug (URL amigable):</label>
@@ -34,11 +34,11 @@
     <input type="number" formControlName="puntajeMaximo" min="1" placeholder="Puntaje máximo" />
     <label>ID Instructor:</label>
     <input type="number" formControlName="instructorId" min="1" placeholder="ID del instructor" />
-    <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:18px;">
-      <button type="submit" class="add-course-btn" [disabled]="loading || !cursoForm.valid">
-        <i class="fa fa-check"></i> Registrar Curso
+    <div class="modal-actions">
+      <button type="submit" class="add-course-btn" [disabled]="loading || !cursoForm.valid || !formChanged">
+        <i class="fa fa-check"></i> {{ editandoCursoId ? 'Editar Curso' : 'Registrar Curso' }}
       </button>
-      <button type="button" class="cancel-btn" style="padding:12px 18px;" (click)="agregarCurso()">Cancelar</button>
+      <button type="button" class="cancel-btn danger" (click)="agregarCurso()">Cancelar</button>
     </div>
   </form>
 
@@ -54,14 +54,21 @@
 
   <!-- Listado de cursos -->
   <div *ngIf="cursos.length > 0 && !showForm" class="courses-list">
-    <div *ngFor="let curso of cursos" class="course-card" (click)="verCurso(curso)">
-      <img *ngIf="curso.urlImagen" [src]="curso.urlImagen" alt="Imagen curso" class="course-image" />
+    <div *ngFor="let curso of cursos" class="course-card">
+      <img *ngIf="curso.urlImagen; else placeholderImg" [src]="curso.urlImagen" alt="Imagen curso" class="course-image" />
+      <ng-template #placeholderImg>
+        <div class="course-image placeholder-img">Sin imagen</div>
+      </ng-template>
       <div class="course-title">{{ curso.titulo || curso.nombre }}</div>
       <div class="course-description">{{ curso.descripcion }}</div>
       <div class="course-meta">
         <span>{{ curso.nivel || 'Sin nivel' }}</span>
         <span>{{ curso.duracionHoras }}h</span>
         <span>{{ curso.puntajeMaximo }} pts</span>
+      </div>
+      <div class="card-actions">
+        <button class="edit-btn" (click)="editarCurso(curso)"><i class="fa fa-edit"></i> Editar</button>
+        <button class="delete-btn" (click)="eliminarCurso(curso.id)"><i class="fa fa-trash"></i> Borrar</button>
       </div>
     </div>
   </div>

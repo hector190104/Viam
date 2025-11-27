@@ -1,4 +1,4 @@
-
+/* === CONTENEDORES Y LAYOUT GENERAL === */
 
 body {
   background: #f6f8fb;
@@ -30,6 +30,8 @@ body {
   font-family: 'Montserrat', 'Segoe UI', Arial, sans-serif;
 }
 
+/* === BOTÓN AGREGAR CURSO === */
+
 .add-course-btn {
   background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
   color: #fff;
@@ -48,12 +50,13 @@ body {
 .add-course-btn:hover {
   background: linear-gradient(90deg, #2575fc 0%, #6a11cb 100%);
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(106, 17, 203, 0.3);
 }
 
 .add-course-btn:active {
   transform: translateY(0);
 }
+
+/* === LISTA DE CURSOS === */
 
 .courses-list {
   width: 100%;
@@ -86,13 +89,17 @@ body {
 .course-card {
   background: linear-gradient(135deg, #e0e7ff 0%, #f0f4ff 100%);
   border-radius: 18px;
-  box-shadow: 0 2px 8px rgba(0,123,255,0.10);
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.10);
   padding: 1.5rem 1.2rem;
   margin-bottom: 1.5rem;
   width: 100%;
   max-width: 420px;
   border: 1.5px solid #e3f0ff;
   transition: box-shadow 0.3s;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .course-card:hover {
@@ -108,6 +115,15 @@ body {
   border-radius: 10px;
   margin-bottom: 16px;
   background: #e3e7ee;
+}
+
+.course-image.placeholder-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #888;
 }
 
 .course-title {
@@ -136,27 +152,56 @@ body {
   width: 100%;
 }
 
-.wizard-error {
+.card-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: auto;
+  justify-content: center;
+  align-items: flex-end;
+  width: 100%;
+  padding-bottom: 8px;
+}
+
+/* === BOTONES DE LA TARJETA === */
+
+.edit-btn, .delete-btn {
+  background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
   color: #fff;
-  background: linear-gradient(90deg, #4f8cff 0%, #b16cea 100%);
-  border-radius: 10px;
-  padding: 12px 20px;
-  margin: 16px auto;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 24px;
   font-size: 1rem;
   font-weight: 600;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  max-width: 90%;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(106, 17, 203, 0.10);
+  transition: all 0.2s;
+  outline: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
+
+.edit-btn:hover {
+  background: linear-gradient(90deg, #2575fc 0%, #6a11cb 100%);
+  box-shadow: 0 4px 14px rgba(106, 17, 203, 0.18);
+}
+
+.delete-btn {
+  background: linear-gradient(90deg, #ff5858 0%, #f857a6 100%);
+}
+
+.delete-btn:hover {
+  background: linear-gradient(90deg, #f857a6 0%, #ff5858 100%);
+  box-shadow: 0 4px 14px rgba(248, 87, 166, 0.18);
+}
+
+/* === FORMULARIO === */
 
 .modal-form {
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 14px;
-  padding: 24px;
-  background: #fff;
-  border-radius: 12px;
   border: 1px solid #e3e7ee;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
   max-width: 500px;
@@ -181,7 +226,6 @@ body {
   transition: all 0.2s ease;
   background: #f7f8fa;
   color: #222a3a;
-  font-family: 'Segoe UI', Arial, sans-serif;
 }
 
 .modal-form input:focus,
@@ -197,33 +241,66 @@ body {
   resize: vertical;
 }
 
+/* === BOTONES DEL FORMULARIO === */
+
 .modal-actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;  /* 🔥 Ahora centrados */
   gap: 14px;
   margin-top: 18px;
 }
 
-.cancel-btn {
-  background: #b0b0b0;
-  color: #fff;
-  border: none;
+/* === Registrar/Editar === */
+.add-course-btn[type="submit"] {
+  background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+  color: white;
   border-radius: 10px;
-  padding: 12px 32px;
-  font-size: 1rem;
+  height: 54px;
+  font-size: 1.1rem;
   font-weight: 700;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  min-width: 160px;
+  max-width: 220px;
   transition: all 0.3s ease;
-  outline: none;
+}
+
+/* 🔥 ESTADO DESACTIVADO DEL BOTÓN */
+.add-course-btn[disabled] {
+  background: #c5c5c5 !important;
+  cursor: not-allowed !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+
+/* === Cancelar === */
+.cancel-btn {
+  background: linear-gradient(90deg, #ff4b4b 0%, #d60000 100%); /* ROJO */
+  color: #fff;
+  min-width: 160px;
+  max-width: 220px;
+  height: 54px;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: 700;
+  transition: all 0.3s ease;
 }
 
 .cancel-btn:hover {
-  background: #6a11cb;
+  background: linear-gradient(90deg, #d60000 0%, #ff4b4b 100%);
   transform: translateY(-2px);
-  box-shadow: 0 4px 14px rgba(106, 17, 203, 0.2);
+  box-shadow: 0 4px 14px rgba(255, 0, 0, 0.3);
 }
 
-.cancel-btn:active {
-  transform: translateY(0);
+/* === ALERTAS === */
+
+.wizard-error {
+  color: #fff;
+  background: linear-gradient(90deg, #4f8cff 0%, #b16cea 100%);
+  border-radius: 10px;
+  padding: 12px 20px;
+  margin: 16px auto;
+  font-size: 1rem;
+  font-weight: 600;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 90%;
 }
